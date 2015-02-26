@@ -13,11 +13,12 @@ def hello_w():
 
 @app.route('/plot_caffe')
 def plot_caffe():
+	os.chdir('./tmp')
 	s = '<a href=/ > Main </a> <br> '
 	for id in range(0, 8):
-		s = s + os.popen('/opt/caffe/tools/extra/plot_training_log.py.example ' + str(id) + ' tmp/' + str(id) + '.png ../caffe_run_imagenet_imagedata/caffe.INFO /tmp/caffe.INFO').read()
+		s = s + os.popen('/opt/caffe/tools/extra/plot_training_log.py.example ' + str(id) + ' ' + str(id) + '.png  /tmp/caffe.INFO').read()
 		s = s + ' <img src=/get?path=tmp/' + str(id) + '.png /> <br> '
-
+	os.chdir('../')
 	return s 
 
 
@@ -51,7 +52,6 @@ def cmd():
 
 if __name__ == '__main__':
 	app.run(host='0.0.0.0', debug=True)
-
 
 
 

@@ -1,4 +1,4 @@
-python hello.py
+python main.py
 
 
 
