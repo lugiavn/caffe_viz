@@ -14,9 +14,12 @@ def hello_w():
 @app.route('/plot_caffe')
 def plot_caffe():
 	os.chdir('./tmp')
-	s = '<a href=/ > Main </a> <br> '
+	log_files = flask.request.args.get('log_files')
+	if log_files is None:
+		log_files = '/tmp/caffe.INFO'
+	s = '<a href=/ > Main </a> <br> ' + log_files
 	for id in range(0, 8):
-		s = s + os.popen('/opt/caffe/tools/extra/plot_training_log.py.example ' + str(id) + ' ' + str(id) + '.png  /tmp/caffe.INFO').read()
+		s = s + os.popen('/opt/caffe/tools/extra/plot_training_log.py.example ' + str(id) + ' ' + str(id) + '.png  ' + log_files ).read()
 		s = s + ' <img src=/get?path=tmp/' + str(id) + '.png /> <br> '
 	os.chdir('../')
 	return s 
@@ -24,7 +27,7 @@ def plot_caffe():
 
 @app.route('/get')
 def get():
-	return flask.send_file(flask.request.args.get('path'))
+	return flask.send_file(flask.request.args.get('path'), as_attachment=True)
 
 @app.route('/dir')
 def dir():
